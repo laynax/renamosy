@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+  # renamosy:
+    # build: .
+    # depends_on:
+    #   - nats
+    #   - mongodb
+    #   - redpanda
+  mongodb:
+    image: bitnami/mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGODB_DATABASE: shell
+  nats:
+    image: nats
+    command: -js
+    ports:
+      - "4222:4222"
+  redpanda:
+    image: docker.vectorized.io/vectorized/redpanda
+    command:
+    - redpanda
+    - start
+    - --smp
+    - '1'
+    - --reserve-memory
+    - 0M
+    - --overprovisioned
+    - --node-id
+    - '0'
+    - --kafka-addr
+    - PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
+    - --advertise-kafka-addr
+    - PLAINTEXT://redpanda:29092,OUTSIDE://localhost:9092
+    container_name: redpanda-1
+    ports:
+    - 9092:9092
+    - 29092:29092
+  # scylladb:
+  #   image: scylladb/scylla
+  #   command: --broadcast-address 127.0.0.1 --listen-address 0.0.0.0 --broadcast-rpc-address 127.0.0.1
+  #   ports:
+  #     - "9042:9042"
