@@ -12,12 +12,13 @@ func main() {
 	filePath := "./mockfiles"
 
 	// bnats.SendToNats(filePath)
-	bpanda.SendToRedpanda(filePath)
-
-	smongo.FetchFromRedpanda()
 	// smongo.FetchFromNats()
 
+	bpanda.SendToRedpanda(filePath)
+	smongo.FetchFromRedpanda()
+
 	// sscylla.FetchFromNats()
+	// sscylla.FetchFromRedpanda()
 
 	time.Sleep(time.Minute)
 }
